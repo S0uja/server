@@ -16,10 +16,11 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 
 app.use((req, res, next) => {
     res.on('finish', () => {
-      const token = req.headers.authorization?.split(' ')[1]
+      const token = req.headers.authorization
       if (token) {
         try{
-          const info = jwt.verify(token, process.env.SECRET_KEY)
+          
+          const info = jwt.verify(token.split(' ')[1], process.env.SECRET_KEY)
           req.user = info
         }catch(e){}
       }
