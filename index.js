@@ -25,7 +25,7 @@ app.use((req, res, next) => {
         }catch(e){}
       }
       
-      const logData = `${new Date().toISOString()}|${req.user.id || 'GUEST'}|${req.user.role || 'none'}|${req.method}|'${req._parsedOriginalUrl.path}'|${req.ip}\n`;
+      const logData = `${new Date().toISOString()}|${req?.user?.id || 'GUEST'}|${req?.user?.role || 'none'}|${req?.method}|'${req?._parsedOriginalUrl?.path}'|${req?.ip}\n`;
 
       fs.appendFile('logs.log', logData, (err) => {
         if (err) {
