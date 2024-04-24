@@ -14,7 +14,7 @@ class CartController {
                     json:json
                 },
                 {
-                    where:{id:oldCart.id}
+                    where:{id:cart.id}
                 })
             }
             else{
