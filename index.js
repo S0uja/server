@@ -9,11 +9,14 @@ const PORT = process.env.PORT || 5000
 const app = express()
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
+const expressWs = require('express-ws');
+const {messageUserHandler,messageAdminHandler} = require('./sockets/supportSocket')
+
+expressWs(app);
 
 app.use(cors())
 app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'static')))
-
 app.use((req, res, next) => {
     res.on('finish', () => {
       const token = req.headers.authorization
@@ -37,7 +40,8 @@ app.use((req, res, next) => {
   
     next();
 })
-
+app.ws('/support/user', messageUserHandler)
+app.ws('/support/admin', messageAdminHandler)
 app.use('/api', router)
 app.use(errorHandler)
 

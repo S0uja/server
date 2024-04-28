@@ -81,6 +81,10 @@ const Review = sequelize.define('review', {
     rate:{type:DataTypes.INTEGER,allowNull: false,defaultValue:0}
 });
 
+const Options = sequelize.define('options',{
+    name:{type: DataTypes.STRING, allowNull: false},
+    value:{type:DataTypes.STRING,allowNull: false}
+})
 
 const OrderStatus = sequelize.define('order_status', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -146,7 +150,8 @@ module.exports = {
     Review,
     OrderStatus,
     Collection,
-    CollectionProducts
+    CollectionProducts,
+    Options
 }
 
 
