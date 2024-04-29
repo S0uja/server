@@ -107,6 +107,9 @@ const messageUserHandler = (ws, req) => {
 }
 
 const messageAdminHandler = (ws, req) => {
+
+  console.log('TEST')
+
   const {room,id} = req.query
 
   admins[id] = {ws:ws,room:room}
