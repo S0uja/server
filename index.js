@@ -41,7 +41,7 @@ app.use((req, res, next) => {
     next();
 })
 app.ws('/support/user', messageUserHandler)
-app.ws('/support/admin', messageAdminHandler)
+app.ws('/support/admin', (ws, req) => {console.log(ws)})
 app.use('/api', router)
 app.use(errorHandler)
 
