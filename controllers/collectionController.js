@@ -153,8 +153,6 @@ class CollectionController {
 				return sendResponse(res, 200, 'error', { message: errors })
 			}
 
-			await CollectionProducts.destroy({ where: { collectionId: id } })
-
 			const collection = await Collection.update(
 				{
 					name: name,
@@ -165,13 +163,12 @@ class CollectionController {
 					where: { id: id },
 				}
 			)
-
+			await CollectionProducts.destroy({ where: { collectionId: id } })
 			for (const product of products) {
 				await CollectionProducts.create({
 					collectionId: id,
 					productId: product,
 				})
-				console.log('added')
 			}
 
 			deleteImages(new Array(oldCollection))

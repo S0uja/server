@@ -174,6 +174,7 @@ class ProductController {
 			page = parseInt(page) || 1
 			limit = parseInt(limit) || 20
 			const offset = page * limit - limit
+
 			const productsList = await Product.findAll({
 				include: [
 					ProductImages,
@@ -217,11 +218,26 @@ class ProductController {
 			const products = await Product.findAndCountAll({
 				where: {
 					name: { [sequelize.Op.like]: `%${search}%` },
+					...(manufacturer ? { manufacturerId: manufacturer } : {}),
 					...(category ? { categoryId: category } : {}),
 				},
+				include: [Manufacturer],
 			})
+
 			const totalProducts = products.count
+
 			const totalPages = Math.ceil(totalProducts / limit)
+
+			let manufacturers = []
+
+			if (!manufacturer.length) {
+				const tmpManufacturers = products.rows.map(product => {
+					return product.manufacturer
+				})
+				const setManufacturers = new Set(tmpManufacturers.map(JSON.stringify))
+				manufacturers = Array.from(setManufacturers).map(JSON.parse)
+			}
+
 			const errors = []
 
 			if (!productsList) {
@@ -231,7 +247,12 @@ class ProductController {
 				return sendResponse(res, 400, 'error', { message: errors })
 			}
 			return sendResponse(res, 200, 'success', {
-				data: { title: 'Поиск', list: productsList, totalPages: totalPages },
+				data: {
+					title: 'Поиск',
+					list: productsList,
+					totalPages: totalPages,
+					manufacturers: manufacturers,
+				},
 			})
 		} catch (e) {
 			sendResponse(res, 500, 'error', {

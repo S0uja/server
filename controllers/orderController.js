@@ -44,14 +44,13 @@ class OrderController {
 				price: price,
 				orderStatusId: 1,
 			})
-			console.log(order)
+
 			for (const product of filteredProducts) {
-				const newProduct = await OrderProducts.create({
+				await OrderProducts.create({
 					orderId: order.id,
 					productId: product.id,
 					count: product.count,
 				})
-				console.log(newProduct)
 			}
 
 			return sendResponse(res, 200, 'success', {

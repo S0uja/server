@@ -185,7 +185,7 @@ class CartController {
 
 			await Cart.destroy({ where: { id: id } })
 
-			return sendResponse(res, 200, 'success')
+			return sendResponse(res, 200, 'success', { data: [] })
 		} catch (e) {
 			sendResponse(res, 500, 'error', {
 				message: `Ошибка сервера - ${e}`,

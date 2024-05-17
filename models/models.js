@@ -26,12 +26,6 @@ const Category = sequelize.define('category', {
 	filename: { type: DataTypes.STRING, allowNull: false },
 })
 
-// const Brand = sequelize.define('brands', {
-// 	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-// 	name: { type: DataTypes.STRING, allowNull: false },
-// 	filename: { type: DataTypes.STRING, allowNull: false },
-// })
-
 const Manufacturer = sequelize.define('manufacturer', {
 	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 	name: { type: DataTypes.STRING, allowNull: false },
@@ -105,11 +99,6 @@ const Review = sequelize.define('review', {
 	rate: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
 })
 
-const Options = sequelize.define('options', {
-	name: { type: DataTypes.STRING, allowNull: false },
-	value: { type: DataTypes.STRING, allowNull: false },
-})
-
 const OrderStatus = sequelize.define(
 	'order_status',
 	{
@@ -134,23 +123,6 @@ const CollectionProducts = sequelize.define(
 	{ timestamps: false }
 )
 
-const Role = sequelize.define('role', {
-	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-	name: { type: DataTypes.STRING, allowNull: false, unique: true },
-})
-
-const Permission = sequelize.define('permission', {
-	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-	name: { type: DataTypes.STRING, allowNull: false, unique: true },
-})
-
-const RolePermission = sequelize.define('role_permissions', {
-	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-})
-
-Role.hasMany(RolePermission)
-Permission.belongsTo(RolePermission)
-
 User.hasMany(Cart)
 Cart.belongsTo(User)
 
@@ -174,12 +146,6 @@ Product.belongsTo(Category)
 
 Manufacturer.hasMany(Product)
 Product.belongsTo(Manufacturer)
-
-// Brand.hasMany(Product)
-// Product.belongsTo(Brand)
-
-// Manufacturer.hasMany(Brand)
-// Brand.belongsTo(Manufacturer)
 
 Product.hasMany(OrderProducts)
 OrderProducts.belongsTo(Product)
@@ -206,8 +172,4 @@ module.exports = {
 	OrderStatus,
 	Collection,
 	CollectionProducts,
-	Options,
-	Role,
-	RolePermission,
-	Permission,
 }

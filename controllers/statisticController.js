@@ -114,14 +114,8 @@ class StatisticController {
 		try {
 			const data = fs.readFileSync('logs.log', 'utf8')
 			const result = data.split('\n').map(item => {
-				const splited = item.split('|')
 				return {
-					date: splited[0],
-					user_id: splited[1],
-					role: splited[2],
-					method: splited[3],
-					path: splited[4],
-					ip: splited[5],
+					log: item,
 				}
 			})
 			result.pop()

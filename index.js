@@ -5,11 +5,14 @@ const cors = require('cors')
 const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const path = require('path')
+var fs = require('fs')
 const PORT = process.env.PORT || 5000
 const app = express()
-const jwt = require('jsonwebtoken')
-const fs = require('fs')
+const morgan = require('morgan')
 const expressWs = require('express-ws')
+const logStream = fs.createWriteStream(path.join(__dirname, 'logs.log'), {
+	flags: 'a',
+})
 
 const {
 	messageUserHandler,
@@ -21,29 +24,7 @@ expressWs(app)
 app.use(cors())
 app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'static')))
-app.use((req, res, next) => {
-	res.on('finish', () => {
-		const token = req.headers.authorization
-		if (token) {
-			try {
-				const info = jwt.verify(token.split(' ')[1], process.env.SECRET_KEY)
-				req.user = info
-			} catch (e) {}
-		}
-
-		const logData = `${new Date().toISOString()}|${req?.user?.id || 'GUEST'}|${
-			req?.user?.role || 'none'
-		}|${req?.method}|'${req?._parsedOriginalUrl?.path}'|${req?.ip}\n`
-
-		fs.appendFile('logs.log', logData, err => {
-			if (err) {
-				console.error('Ошибка при записи в лог файл:', err)
-			}
-		})
-	})
-
-	next()
-})
+app.use(morgan('common', { stream: logStream }))
 app.ws('/support/user', messageUserHandler)
 app.ws('/support/admin', messageAdminHandler)
 app.use('/api', router)

@@ -238,21 +238,6 @@ class UserController {
 				include: [
 					{
 						model: Cart,
-						// include: [Product],
-					},
-					{
-						model: Order,
-						include: [
-							OrderStatus,
-							{
-								model: OrderProducts,
-								include: [Product],
-							},
-						],
-					},
-					{
-						model: Review,
-						include: [Product, ReviewStatus],
 					},
 				],
 			})
