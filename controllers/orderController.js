@@ -161,6 +161,7 @@ class OrderController {
 					},
 					OrderStatus,
 				],
+				order: [['createdAt', 'DESC']],
 			})
 
 			if (!orderList) {
