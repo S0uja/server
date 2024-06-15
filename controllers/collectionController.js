@@ -23,7 +23,7 @@ class CollectionController {
 				errors.push('Название не указано')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			const collection = await Collection.create({
@@ -40,22 +40,7 @@ class CollectionController {
 			}
 
 			return sendResponse(res, 200, 'success', {
-				data: [
-					await Collection.findOne({
-						where: { id: collection.id },
-						include: [
-							{
-								model: CollectionProducts,
-								include: [
-									{
-										model: Product,
-										include: [Manufacturer, Category, ProductImages],
-									},
-								],
-							},
-						],
-					}),
-				],
+				data: [],
 			})
 		} catch (e) {
 			sendResponse(res, 500, 'error', {
@@ -85,7 +70,7 @@ class CollectionController {
 				errors.push('Коллекции не найдены')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: collectionList })
@@ -119,7 +104,7 @@ class CollectionController {
 				errors.push('Коллекция не найдена')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: [collection] })
@@ -150,10 +135,10 @@ class CollectionController {
 				errors.push('Продукты не заполнены')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
-			const collection = await Collection.update(
+			await Collection.update(
 				{
 					name: name,
 					visible: visible,
@@ -163,6 +148,7 @@ class CollectionController {
 					where: { id: id },
 				}
 			)
+
 			await CollectionProducts.destroy({ where: { collectionId: id } })
 			for (const product of products) {
 				await CollectionProducts.create({
@@ -174,22 +160,7 @@ class CollectionController {
 			deleteImages(new Array(oldCollection))
 
 			return sendResponse(res, 200, 'success', {
-				data: [
-					await Collection.findOne({
-						where: { id: id },
-						include: [
-							{
-								model: CollectionProducts,
-								include: [
-									{
-										model: Product,
-										include: [Manufacturer, Category, ProductImages],
-									},
-								],
-							},
-						],
-					}),
-				],
+				data: [],
 			})
 		} catch (e) {
 			sendResponse(res, 500, 'error', {
@@ -208,12 +179,12 @@ class CollectionController {
 				errors.push('Коллекция не найдена')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 			await CollectionProducts.destroy({ where: { collectionId: id } })
 			await Collection.destroy({ where: { id: id } })
 
-			deleteImages(new Array(collection))
+			deleteImages([collection])
 
 			return sendResponse(res, 200, 'success', {})
 		} catch (e) {

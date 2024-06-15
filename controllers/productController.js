@@ -315,7 +315,7 @@ class ProductController {
 				errors.push('Товар не найден')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: [product] })
@@ -382,7 +382,7 @@ class ProductController {
 				errors.push('Объем или вес не указан')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			//Обновление данные продукта

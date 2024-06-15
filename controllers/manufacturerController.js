@@ -6,10 +6,10 @@ class ManufacturerController {
 	async create(req, res) {
 		try {
 			const { name, description, contact } = req.body
-			const fileName = req.file?.filename || null
+			const filename = req.file?.filename || null
 			const errors = []
 
-			if (!fileName) {
+			if (!filename) {
 				errors.push('Картинка не загружена')
 			}
 			if (!name) {
@@ -22,12 +22,12 @@ class ManufacturerController {
 				errors.push('Контакт не указан')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			const manufacturer = await Manufacturer.create({
 				name: name,
-				filename: fileName,
+				filename: filename,
 				description: description,
 				contact: contact,
 			})
@@ -49,7 +49,7 @@ class ManufacturerController {
 				errors.push('Производители не найдены')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', {
@@ -74,7 +74,7 @@ class ManufacturerController {
 				errors.push('Категория не найдена')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: [manufacturer] })
@@ -111,7 +111,7 @@ class ManufacturerController {
 				errors.push('Контакт не указан')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			await Manufacturer.update(
@@ -149,7 +149,7 @@ class ManufacturerController {
 				errors.push('Производитель не найден')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			Manufacturer.destroy({ where: { id: id } })

@@ -10,8 +10,7 @@ class SqlController {
 			try {
 				result = await sequelize.query(sql, { raw: true })
 			} catch (error) {
-				console.log(error)
-				return sendResponse(res, 200, 'error', { message: [error] })
+				return sendResponse(res, 400, 'error', { message: [error] })
 			}
 
 			return sendResponse(res, 200, 'success', { data: [result] })

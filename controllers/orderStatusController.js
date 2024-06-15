@@ -11,7 +11,7 @@ class OrderStatusController {
 				errors.push('Имя не заполнено')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			const result = await OrderStatus.create({ name: name })
@@ -33,7 +33,7 @@ class OrderStatusController {
 				errors.push('Статусы заказа не найдены')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: result })
@@ -54,7 +54,7 @@ class OrderStatusController {
 				errors.push('Статус заказа не найден')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: [result] })
@@ -72,13 +72,11 @@ class OrderStatusController {
 			const result = OrderStatus.findOne({ where: { id: id } })
 			const errors = []
 
-			console.log(name)
-
 			if (!result) {
 				errors.push('Статус заказа не найден')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			await OrderStatus.update({ name: name }, { where: { id: id } })
@@ -101,7 +99,7 @@ class OrderStatusController {
 				errors.push('Статус заказа не найден')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', {})

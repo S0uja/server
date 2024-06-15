@@ -11,7 +11,6 @@ const orderStatusRouter = require('./orderStatusRouter')
 const collectionRouter = require('./collectionRouter')
 const statisticRouter = require('./statisticRouter')
 const sqlRouter = require('./sqlRouter')
-// const brandRouter = require('./brandRouter')
 
 router.use('/category', categoryRouter)
 router.use('/product', productRouter)
@@ -24,6 +23,5 @@ router.use('/orderStatus', orderStatusRouter)
 router.use('/collection', collectionRouter)
 router.use('/statistic', statisticRouter)
 router.use('/sql', sqlRouter)
-// router.use('/brand', brandRouter)
 
 module.exports = router

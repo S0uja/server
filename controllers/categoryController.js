@@ -16,7 +16,7 @@ class CategoryController {
 				errors.push('Название не указано')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			const category = await Category.create({
@@ -42,7 +42,7 @@ class CategoryController {
 				errors.push('Категории не найдены')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: categoriesList })
@@ -63,7 +63,7 @@ class CategoryController {
 				errors.push('Категория не найдена')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			return sendResponse(res, 200, 'success', { data: [category] })
@@ -92,7 +92,7 @@ class CategoryController {
 				errors.push('Название не указано')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			await Category.update(
@@ -110,7 +110,7 @@ class CategoryController {
 			deleteImages(new Array(oldCategory))
 
 			return sendResponse(res, 200, 'success', {
-				data: [await Category.findOne({ where: { id: id } })],
+				data: [],
 			})
 		} catch (e) {
 			sendResponse(res, 500, 'error', {
@@ -129,11 +129,11 @@ class CategoryController {
 				errors.push('Категория не найдена')
 			}
 			if (errors.length) {
-				return sendResponse(res, 200, 'error', { message: errors })
+				return sendResponse(res, 400, 'error', { message: errors })
 			}
 
 			await Category.destroy({ where: { id: id } })
-			deleteImages(new Array(category))
+			deleteImages([category])
 
 			return sendResponse(res, 200, 'success', {})
 		} catch (e) {
